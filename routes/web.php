@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\WorkOS\Http\Middleware\ValidateSessionWithWorkOS;
 
-Route::get('/', fn () => Inertia::render('Welcome'));
+//Route::get('/', fn () => Inertia::render('Welcome'));
 
 Route::middleware(['auth', ValidateSessionWithWorkOS::class])->group(function () {
     Route::get('dashboard', function () {

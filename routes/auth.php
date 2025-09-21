@@ -5,7 +5,7 @@ use Laravel\WorkOS\Http\Requests\AuthKitAuthenticationRequest;
 use Laravel\WorkOS\Http\Requests\AuthKitLoginRequest;
 use Laravel\WorkOS\Http\Requests\AuthKitLogoutRequest;
 
-Route::get('login', function (AuthKitLoginRequest $request) {
+Route::get('/', function (AuthKitLoginRequest $request) {
     return $request->redirect();
 })->middleware(['guest'])->name('login');
 
