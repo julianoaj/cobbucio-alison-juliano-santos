@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { update } from '@/actions/App/Http/Controllers/Settings/ProfileController';
-import { edit } from '@/routes/profile';
-import { Form, Head, usePage } from '@inertiajs/vue3';
-
+import { Form, Head, useForm, usePage } from '@inertiajs/vue3';
 import DeleteUser from '@/components/DeleteUser.vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';
 import InputError from '@/components/InputError.vue';
@@ -22,12 +19,23 @@ defineProps<Props>();
 const breadcrumbItems: BreadcrumbItem[] = [
     {
         title: 'Profile settings',
-        href: edit().url,
+        href: route('profile.edit'),
     },
 ];
 
 const page = usePage();
 const user = page.props.auth.user;
+
+const form = useForm({
+    name: user.name,
+    email: user.email,
+});
+
+const submit = () => {
+    form.patch(route('profile.update'), {
+        preserveScroll: true
+    });
+};
 </script>
 
 <template>
@@ -38,11 +46,15 @@ const user = page.props.auth.user;
             <div class="flex flex-col space-y-6">
                 <HeadingSmall title="Profile information" description="Update your name and email address" />
 
-                <Form v-bind="update.form()" class="space-y-6" v-slot="{ errors, processing, recentlySuccessful }">
+                <Form
+                    class="space-y-6"
+                    v-slot="{ errors, processing, recentlySuccessful }"
+                    @submit.prevent="submit"
+                >
                     <div class="grid gap-2">
                         <Label for="name">Name</Label>
                         <Input
-                            id="name"
+                            v-model="form.name"
                             class="mt-1 block w-full"
                             name="name"
                             :default-value="user.name"
@@ -56,7 +68,7 @@ const user = page.props.auth.user;
                     <div class="grid gap-2">
                         <Label for="email">Email address</Label>
                         <Input
-                            id="email"
+                            v-model="form.email"
                             type="email"
                             class="mt-1 block w-full"
                             name="email"
@@ -70,7 +82,7 @@ const user = page.props.auth.user;
                     </div>
 
                     <div class="flex items-center gap-4">
-                        <Button :disabled="processing">Save</Button>
+                        <Button type="submit" :disabled="processing">Save</Button>
 
                         <Transition
                             enter-active-class="transition ease-in-out"

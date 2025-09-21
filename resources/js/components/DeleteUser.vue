@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { destroy } from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import { Form } from '@inertiajs/vue3';
 
 import HeadingSmall from '@/components/HeadingSmall.vue';
@@ -30,7 +29,6 @@ import {
                 </DialogTrigger>
                 <DialogContent>
                     <Form
-                        v-bind="destroy.form()"
                         reset-on-success
                         :options="{
                             preserveScroll: true,
