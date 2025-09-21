@@ -1,6 +1,18 @@
 import { AppPageProps } from '@/types/index';
+import { AxiosInstance } from 'axios';
+import type { route as ziggyRoute, Ziggy } from 'ziggy-js';
 
-// Extend ImportMeta interface for Vite...
+declare global {
+    interface Window {
+        axios: AxiosInstance;
+        Echo: Echo;
+        Pusher: Pusher;
+        Ziggy?: Ziggy;
+    }
+
+    const route: typeof ziggyRoute;
+}
+
 declare module 'vite/client' {
     interface ImportMetaEnv {
         readonly VITE_APP_NAME: string;
@@ -19,6 +31,7 @@ declare module '@inertiajs/core' {
 
 declare module 'vue' {
     interface ComponentCustomProperties {
+        route: typeof ziggyRoute;
         $inertia: typeof Router;
         $page: Page;
         $headManager: ReturnType<typeof createHeadManager>;
