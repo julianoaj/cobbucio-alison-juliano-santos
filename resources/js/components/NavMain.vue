@@ -10,15 +10,13 @@ import {
     SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
-import { Link, usePage } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible';
 import { ChevronRight } from 'lucide-vue-next';
 
 defineProps<{
     items: NavItem[];
 }>();
-
-const page = usePage();
 
 const hasSubItems = (item: NavItem) => item.subItems && item.subItems.length > 0;
 </script>
