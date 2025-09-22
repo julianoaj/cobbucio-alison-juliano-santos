@@ -39,7 +39,7 @@ class WalletController extends Controller
     public function show(): \Inertia\Response
     {
         return Inertia::render('wallet/Index', [
-            'wallet' => request()->user()->wallet,
+            'wallet' => request()->user()->wallet->only(['id', 'balance', 'currency']),
         ]);
     }
 
