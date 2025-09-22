@@ -9,12 +9,26 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
         href: route('dashboard'),
-        icon: LayoutGrid,
+        icon: LayoutGrid
     },
     {
         title: 'Carteira',
-        href: route('wallet.show'),
+        href: '',
         icon: WalletIcon,
+        subItems: [
+            {
+                title: 'Inicio',
+                href: route('wallet.show'),
+            },
+            {
+                title: 'Transferir',
+                href: '',
+            },
+            {
+                title: 'Depositar',
+                href: '',
+            },
+        ],
     },
 ];
 </script>

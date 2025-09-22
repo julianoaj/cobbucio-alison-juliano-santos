@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { defineEmits } from 'vue';
-import { Button } from '@/components/ui/button';
 import { Banknote, ArrowRightLeft } from 'lucide-vue-next';
 
 const emit = defineEmits<{
@@ -9,7 +8,7 @@ const emit = defineEmits<{
     (e: 'transfer'): void
 }>();
 
-function onClick(action: 'deposit' | 'withdrawal' | 'transfer'): void {
+const onClick = (action: 'deposit' | 'withdrawal' | 'transfer'): void => {
     emit(action);
 }
 </script>
