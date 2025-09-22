@@ -10,6 +10,7 @@ return new class extends Migration {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->string('type'); // 'deposit', 'withdrawal', 'transfer'
             $table->decimal('amount', 15, 2);
             $table->foreignId('to_user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->string('currency', 3);
