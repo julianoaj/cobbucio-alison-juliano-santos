@@ -7,24 +7,29 @@ import { LayoutGrid, WalletIcon } from 'lucide-vue-next';
 
 const mainNavItems: NavItem[] = [
     {
+        name: 'dashboard',
         title: 'Dashboard',
         href: route('dashboard'),
         icon: LayoutGrid
     },
     {
+        name: 'wallet',
         title: 'Carteira',
         href: '',
         icon: WalletIcon,
         subItems: [
             {
+                name: 'walletHome',
                 title: 'Inicio',
                 href: route('wallet.show'),
             },
             {
+                name: 'walletTransfer',
                 title: 'Transferir',
                 href: '',
             },
             {
+                name: 'walletDeposit',
                 title: 'Depositar',
                 href: '',
             },
