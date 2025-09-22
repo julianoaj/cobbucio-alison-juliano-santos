@@ -19,18 +19,13 @@ const mainNavItems: NavItem[] = [
         icon: WalletIcon,
         subItems: [
             {
-                name: 'walletHome',
+                name: 'wallet',
                 title: 'Inicio',
                 href: route('wallet.show'),
             },
             {
                 name: 'walletTransfer',
-                title: 'Transferir',
-                href: '',
-            },
-            {
-                name: 'walletDeposit',
-                title: 'Depositar',
+                title: 'Transações',
                 href: '',
             },
         ],

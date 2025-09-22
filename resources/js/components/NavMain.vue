@@ -22,7 +22,7 @@ defineProps<{
 
 const store = useHomeStore();
 
-const {getActivePage} = storeToRefs(store)
+const {getActualUrl} = storeToRefs(store)
 
 const hasSubItems = (item: NavItem) => item.subItems && item.subItems.length > 0;
 </script>
@@ -35,8 +35,7 @@ const hasSubItems = (item: NavItem) => item.subItems && item.subItems.length > 0
                 <SidebarMenuItem>
                     <CollapsibleTrigger asChild>
                         <SidebarMenuButton
-                            :class="getActivePage === item.name ? 'bg-primary/20' : ''"
-                            @click="store.setPage(item.name)"
+                            :class="getActualUrl.includes(item.name) ? 'bg-primary/20' : ''"
                             :tooltip="item.title"
                             :as-child="!hasSubItems(item)"
                         >
@@ -50,7 +49,6 @@ const hasSubItems = (item: NavItem) => item.subItems && item.subItems.length > 0
                             <div
                                 v-else
                                 class="flex gap-2"
-                                @click="store.setPage(item.name)"
                             >
                                 <component :is="item.icon" v-if="item.icon" :size="18"/>
                                 <span>{{ item.title }}</span>
@@ -64,7 +62,7 @@ const hasSubItems = (item: NavItem) => item.subItems && item.subItems.length > 0
                     <CollapsibleContent v-if="hasSubItems(item)">
                         <SidebarMenuSub>
                             <SidebarMenuSubItem v-for="subItem in item.subItems" :key="subItem.title">
-                                <SidebarMenuSubButton @click="store.setPage(subItem.name)" as-child>
+                                <SidebarMenuSubButton as-child>
                                     <Link :href="subItem.href">
                                         {{ subItem.title }}
                                     </Link>
