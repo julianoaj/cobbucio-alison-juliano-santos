@@ -9,7 +9,6 @@ import * as z from 'zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Stepper, StepperDescription, StepperItem, StepperSeparator, StepperTitle, StepperTrigger } from '@/components/ui/stepper';
 import { useHomeStore } from '@/stores/home/useHomeStore';
-import { storeToRefs } from 'pinia';
 import { ModelTransactionValues } from '@/types/wallet';
 
 interface Props {
@@ -68,6 +67,12 @@ const formSchema = [
                 .refine((n) => (n as number) > 0, { message: 'O valor a ser depositado precisa ser maior que zero!' }),
         ),
     }),
+    z.object({
+        email: z
+            .string({ required_error: 'Por favor insira o e-mail do destinatário.' })
+            .min(1, { message: 'Por favor insira o e-mail do destinatário.' })
+            .email({ message: 'Por favor insira um e-mail válido.' }),
+    }),
     z.object({}),
 ];
 
@@ -84,13 +89,18 @@ const steps = [
     },
     {
         step: 2,
+        title: 'Para quem',
+        description: 'Informe o destinatário',
+    },
+    {
+        step: 3,
         title: 'Confirmação',
         description: 'Confirme o valor',
     },
 ];
 
 const onSubmit = async (values: ModelTransactionValues) => {
-    await store.requestCreateTransaction(values, 'deposit')
+    await store.requestCreateTransaction(values, 'transfer')
 
     open.value = false;
 };
@@ -109,8 +119,10 @@ const onSubmit = async (values: ModelTransactionValues) => {
 
         <DialogContent class="sm:max-w-[525px]">
             <DialogHeader>
-                <DialogTitle>Depositar</DialogTitle>
-                <DialogDescription> Faça um depósito seguro e rápido. Insira o valor desejado e confirme para continuar. </DialogDescription>
+                <DialogTitle>Transferir</DialogTitle>
+                <DialogDescription>
+                    Faça uma transferência segura e rápida. Insira o valor desejado, email e confirme para continuar.
+                </DialogDescription>
             </DialogHeader>
 
             <Form :key="formKey" v-slot="{ meta, values, validate }" as="" keep-values :validation-schema="currentValidationSchema">
@@ -181,13 +193,27 @@ const onSubmit = async (values: ModelTransactionValues) => {
                                     </FormItem>
                                 </FormField>
                             </template>
+
+                            <template v-if="stepIndex === 2">
+                                <div>
+                                    <FormField v-slot="{ componentField }" name="email">
+                                        <FormItem>
+                                            <FormLabel>Destinatário</FormLabel>
+                                            <FormControl>
+                                                <Input placeholder="E-mail" type="text" v-bind="componentField" />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    </FormField>
+                                </div>
+                            </template>
                         </div>
 
                         <div class="mt-4 flex items-center justify-between">
                             <Button :disabled="isPrevDisabled" variant="outline" size="sm" @click="prevStep()"> Voltar </Button>
                             <div class="flex items-center gap-3">
                                 <Button
-                                    v-if="stepIndex !== 2"
+                                    v-if="stepIndex !== 3"
                                     :type="meta.valid ? 'button' : 'submit'"
                                     :disabled="isNextDisabled"
                                     size="sm"
@@ -195,7 +221,7 @@ const onSubmit = async (values: ModelTransactionValues) => {
                                 >
                                     Continuar
                                 </Button>
-                                <Button v-if="stepIndex === 2" size="sm" type="submit"> Depositar! </Button>
+                                <Button v-if="stepIndex === 3" size="sm" type="submit"> Transferir! </Button>
                             </div>
                         </div>
                     </form>

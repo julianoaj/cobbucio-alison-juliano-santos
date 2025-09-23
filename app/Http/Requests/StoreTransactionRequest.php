@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -25,8 +26,25 @@ class StoreTransactionRequest extends FormRequest
         return [
             'type' => ['required', 'in:deposit,withdrawal,transfer'],
             'amount' => ['required', 'numeric', 'min:0.01'],
-            'to_user_id' => ['required_if:type,transfer', 'exists:users,id']
+            'to_user_id' => ['required_if:type,transfer', 'exists:users,id'],
+            'email' => ['required_if:type,transfer', 'nullable', 'email']
         ];
+    }
+
+    /**
+     * Prepare the data for validation.
+     */
+    protected function prepareForValidation(): void
+    {
+        if ($this->type === 'transfer' && $this->email) {
+            $user = User::where('email', $this->email)->first();
+
+            if ($user !== null) {
+                $this->merge(['to_user_id' => $user->id]);
+            }
+            // If no user is found, we intentionally do not set to_user_id so that
+            // validation can fail with the appropriate error.
+        }
     }
 
     public function messages(): array

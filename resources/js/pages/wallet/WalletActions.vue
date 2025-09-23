@@ -2,6 +2,7 @@
 import { defineEmits } from 'vue';
 import { Banknote, ArrowRightLeft } from 'lucide-vue-next';
 import DepositDialog from '@/components/wallet/DepositDialog.vue';
+import TransactionDialog from '@/components/wallet/TransactionDialog.vue';
 
 const emit = defineEmits<{
     (e: 'deposit'): void
@@ -21,13 +22,10 @@ const onClick = (action: 'deposit' | 'withdrawal' | 'transfer'): void => {
                 btn-label="Depositar"
                 :btn-icon="Banknote"
             />
-            <button
-                type="button"
-                class="flex rounded-md bg-secondary px-4 py-2 text-sm font-medium text-secondary-foreground shadow hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-secondary/50"
-                @click="onClick('withdrawal')"
-            >
-                <ArrowRightLeft class="w-4 h-4 mr-2 mt-[1.5px]" /> Transferir
-            </button>
+            <TransactionDialog
+                btn-label="Transferir"
+                :btn-icon="ArrowRightLeft"
+            />
         </div>
     </div>
 </template>

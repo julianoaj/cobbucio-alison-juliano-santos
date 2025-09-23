@@ -12,3 +12,8 @@ export type TransactionItem = {
     created_at: string
     updated_at: string
 }
+
+export type ModelTransactionValues = {
+    balance: number
+    email?: string
+}

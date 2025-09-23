@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Wallet\Deposit;
+use App\Actions\Wallet\Transfer;
 use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
 use App\Models\Transaction;
@@ -26,6 +27,7 @@ class TransactionController extends Controller
     {
         match ($request->type) {
             'deposit' => app(Deposit::class)->handle($request),
+            'transfer' => app(Transfer::class)->handle($request),
             default => throw new Exception("Tipo de transação inválido"),
         };
 

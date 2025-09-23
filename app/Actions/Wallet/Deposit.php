@@ -1,6 +1,5 @@
 <?php
 
-// file: app/Actions/Wallet/Deposit.php
 namespace App\Actions\Wallet;
 
 use App\Interfaces\Action;
