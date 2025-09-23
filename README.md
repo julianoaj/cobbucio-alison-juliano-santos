@@ -58,6 +58,8 @@ As tecnologias utilizadas foram:
 
 - [NodeJS/npm](https://nodejs.org/en/download)
 - [Docker/Docker Compose](https://www.docker.com/get-started)
+- [WorkOS Account](https://laravel.com/docs/12.x/starter-kits#workos)
+  - Crie uma conta gratuita no [WorkOS](https://workos.com/) e obtenha as credenciais para o seu ambiente (WORKOS_CLIENT_ID e WORKOS_API_KEY). Elas são necessárias (e facilmente encontradas na dashboard inicial da WorkOS) para a autenticação de usuário no sistema.
 
 > **Recomendado:**
 > - [Composer](https://yarnpkg.com/getting-started/install)
@@ -77,7 +79,7 @@ Siga os passos abaixo para configurar o ambiente:
    Use o comando `cd nome-do-projeto` para entrar na pasta do projeto.
 
 3. **Configure o arquivo .env**  
-   Copie o arquivo `.env.example` para o `.env` e ajuste as configurações conforme necessário (para desenvolvimento local basta criar um `.env` igual ao `.env.example`).
+   Copie o arquivo `.env.example` para o `.env` e ajuste as configurações conforme necessário. Se atente para as variáveis de ambiente do WorkOS (WORKOS_CLIENT_ID e WORKOS_API_KEY, elas são obtidas no dashboard da [WorkOS](https://workos.com/)).:
 
 4. **Suba os containers**
 ```bash'
