@@ -15,6 +15,8 @@ import AlertConfirm from '@/components/confirmation/AlertConfirm.vue';
 import { useWallet } from '@/composables/useWallet';
 import { useHomeStore } from '@/stores/home/useHomeStore';
 import { storeToRefs } from 'pinia';
+import { TransactionItem } from '@/types/wallet';
+import { usePage } from '@inertiajs/vue3';
 
 defineProps<{
     loading?: boolean;
@@ -45,8 +47,14 @@ const handleConfirm = (): void => {
     confirmOpen.value = false;
 };
 
-const transcriptType = (type: string): string => {
-    switch (type) {
+const transcriptType = (transaction: TransactionItem): string => {
+    console.log(transaction.to_user_id)
+
+    if (transaction.to_user_id && usePage().props.auth.user.id === transaction.to_user_id) {
+        return 'Recebido';
+    }
+
+    switch (transaction.type) {
         case 'deposit':
             return 'Depósito';
         case 'withdraw':
@@ -56,7 +64,7 @@ const transcriptType = (type: string): string => {
         case 'revert':
             return 'Reversão';
         default:
-            return type;
+            return transaction.type;
     }
 };
 
@@ -90,7 +98,7 @@ const formatDate = (value: string | number | Date | null | undefined): string =>
                 <TableRow>
                     <TableHead>Tipo</TableHead>
                     <TableHead>Valor</TableHead>
-                    <TableHead>Para</TableHead>
+                    <TableHead>Para/De</TableHead>
                     <TableHead>Criado em</TableHead>
                     <TableHead class="w-[1%] text-right">Ações</TableHead>
                 </TableRow>
@@ -98,9 +106,9 @@ const formatDate = (value: string | number | Date | null | undefined): string =>
 
             <TableBody v-if="hasItems">
                 <TableRow v-for="row in transactions" :key="row.id">
-                    <TableCell class="capitalize">{{ transcriptType(row.type) }}</TableCell>
+                    <TableCell class="capitalize">{{ transcriptType(row) }}</TableCell>
                     <TableCell>{{ formatAmount(toNumber(row.amount)) }}</TableCell>
-                    <TableCell>{{ row.to_user_id ?? '-' }}</TableCell>
+                    <TableCell>{{ row.to_user ? row.to_user.name : '-' }}</TableCell>
                     <TableCell>{{ formatDate(row.created_at) }}</TableCell>
                     <TableCell class="text-right">
                         <DropdownMenu>

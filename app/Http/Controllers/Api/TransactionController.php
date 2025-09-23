@@ -11,7 +11,7 @@ class TransactionController extends Controller
 {
     public function index(): JsonResponse
     {
-        $transactions = Transaction::latest()->paginate(10);
+        $transactions = Transaction::with('toUser')->latest()->paginate(10);
 
         return response()->json(TransactionResource::collection($transactions), 200);
     }
