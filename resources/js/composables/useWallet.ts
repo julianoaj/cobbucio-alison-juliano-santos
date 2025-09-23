@@ -10,6 +10,17 @@ export const formatAmount = (amount: number, currency?: string) => {
     }
 }
 
+export const toNumber = (value: string | number): number => {
+    if (typeof value === 'number') {
+        return value;
+    }
+    const n = parseFloat(String(value));
+    return Number.isFinite(n) ? n : 0;
+};
+
 export function useWallet() {
-    return { formatAmount };
+    return {
+        formatAmount,
+        toNumber
+    };
 }

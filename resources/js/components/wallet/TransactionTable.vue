@@ -1,5 +1,121 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { computed, ref } from 'vue';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableEmpty } from '@/components/ui/table';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuGroup,
+    DropdownMenuShortcut,
+} from '@/components/ui/dropdown-menu';
+import { TransactionItem } from '@/types/wallet';
+import { Ellipsis, LucideUndo } from 'lucide-vue-next';
+import { Button } from '@/components/ui/button';
+import AlertConfirm from '@/components/confirmation/AlertConfirm.vue';
+import { useWallet } from '@/composables/useWallet';
 
-<template></template>
+const props = defineProps<{
+    items: TransactionItem[];
+    loading?: boolean;
+}>();
+
+const {formatAmount, toNumber} = useWallet()
+
+const hasItems = computed(() => props.items && props.items.length > 0);
+
+
+const confirmOpen = ref(false);
+const selectedId = ref<number | null>(null);
+
+const openConfirmFor = (id: number): void => {
+    selectedId.value = id;
+    confirmOpen.value = true;
+};
+
+const handleConfirm = (): void => {
+    if (selectedId.value !== null) {
+        console.log(selectedId.value);
+    }
+
+    selectedId.value = null;
+    confirmOpen.value = false;
+};
+
+const transcriptType = (type: string): string => {
+    switch (type) {
+        case 'deposit':
+            return 'Depósito';
+        case 'withdraw':
+            return 'Saque';
+        case 'transfer':
+            return 'Transferência';
+        case 'revert':
+            return 'Reversão';
+        default:
+            return type;
+    }
+};
+</script>
+
+<template>
+    <div class="p-4">
+        <Table>
+            <TableHeader>
+                <TableRow>
+                    <TableHead>Tipo</TableHead>
+                    <TableHead>Valor</TableHead>
+                    <TableHead>Para</TableHead>
+                    <TableHead class="w-[1%] text-right">Ações</TableHead>
+                </TableRow>
+            </TableHeader>
+
+            <TableBody v-if="hasItems">
+                <TableRow v-for="row in items" :key="row.id">
+                    <TableCell class="capitalize">{{ transcriptType(row.type) }}</TableCell>
+                    <TableCell>{{ formatAmount(toNumber(row.amount)) }}</TableCell>
+                    <TableCell>{{ row.to_user_id ?? '-' }}</TableCell>
+                    <TableCell class="text-right">
+                        <DropdownMenu>
+                            <DropdownMenuTrigger as-child>
+                                <Button variant="ghost">
+                                    <ellipsis />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent class="w-46" :side-offset="4" align="end">
+                                <DropdownMenuLabel>Ações</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuGroup>
+                                    <DropdownMenuItem @click="openConfirmFor(row.id)">
+                                        Reverter
+                                        <DropdownMenuShortcut>
+                                            <LucideUndo />
+                                        </DropdownMenuShortcut>
+                                    </DropdownMenuItem>
+                                </DropdownMenuGroup>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </TableCell>
+                </TableRow>
+            </TableBody>
+
+            <TableEmpty v-else>
+                <div v-if="loading" class="text-muted-foreground">Carregando transações…</div>
+                <div v-else class="text-muted-foreground">Nenhuma transação encontrada.</div>
+            </TableEmpty>
+        </Table>
+
+        <AlertConfirm
+            :open="confirmOpen"
+            @update:open="(val) => (confirmOpen = val)"
+            dialogTitle="Confirmar reversão"
+            dialogDescription="Tem certeza que deseja reverter esta transação?"
+            btnLabel="Reverter"
+            @confirm="handleConfirm"
+        />
+    </div>
+</template>
 
 <style scoped></style>

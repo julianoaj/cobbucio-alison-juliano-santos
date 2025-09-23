@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3';
 import type { BreadcrumbItem } from '@/types';
-import PlaceholderPattern from '@/components/PlaceholderPattern.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Wallet } from '@/types/wallet';
+import { TransactionItem, Wallet } from '@/types/wallet';
 import BalanceCard from './BalanceCard.vue';
 import WalletActions from './WalletActions.vue';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useHomeStore } from '@/stores/home/useHomeStore';
 import axios from 'axios';
+import TransactionTable from '@/components/wallet/TransactionTable.vue';
 
 interface Props {
-    wallet: Wallet
+    wallet: Wallet;
 }
 
 const store = useHomeStore();
@@ -25,17 +25,27 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
+const loading = ref<boolean>(false);
+const items = ref<TransactionItem[]>([]);
+
 onMounted(() => {
     store.setWallet(props.wallet);
 
-    axios.get(route('api.transaction.index')).then((response) => {
-        console.log(response.data);
-    })
-})
+    loading.value = true;
+    axios
+        .get(route('api.transaction.index'))
+        .then((response) => {
+            const payload = response.data;
+            items.value = Array.isArray(payload?.data) ? (payload.data as TransactionItem[]) : (payload as TransactionItem[]);
+        })
+        .finally(() => {
+            loading.value = false;
+        });
+});
 </script>
 
 <template>
-    <Head title="Carteira"/>
+    <Head title="Carteira" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
@@ -47,8 +57,8 @@ onMounted(() => {
                     <WalletActions />
                 </div>
             </div>
-            <div class="relative min-h-[100vh] flex-1 rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border">
-                <PlaceholderPattern />
+            <div class="relative flex-1 rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
+                <TransactionTable :items="items" :loading="loading" />
             </div>
         </div>
     </AppLayout>
