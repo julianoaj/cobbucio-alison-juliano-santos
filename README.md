@@ -63,7 +63,7 @@ As tecnologias utilizadas foram:
 - [Docker/Docker Compose](https://www.docker.com/get-started)
 - [WorkOS Setup](https://laravel.com/docs/12.x/starter-kits#workos)
   - Crie uma conta gratuita no [WorkOS](https://workos.com/) e obtenha as credenciais para o seu ambiente (WORKOS_CLIENT_ID e WORKOS_API_KEY). Elas são necessárias (e facilmente encontradas na dashboard inicial da WorkOS) para a autenticação de usuários no sistema.
-  - Configure uma URI de redirecionamento no WorkOS. Acesse atraves do menu "Redirects". Em seguida selecione o botão "Add Redirect URI" e adicione a seguinte URL: `http://localhost:80/authenticate`
+  - Configure uma URI de redirecionamento no WorkOS. Acesse atraves do menu, a página "Redirects". Em seguida selecione o botão "Add Redirect URI" e adicione a seguinte URL: `http://localhost:80/authenticate`
   - Para o funcionamento do projeto basta seguir até aqui, mas algumas funcionalidades como logout será necessário também configurar um link de redirecionamento dentro da plataforma WorkOS. Para isso crie um [AuthKit](https://workos.com/docs/authkit/client-only) e volte a página de "Redirects" no dashboard.
 
 > **Recomendado:** 
