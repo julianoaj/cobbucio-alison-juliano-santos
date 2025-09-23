@@ -1,3 +1,4 @@
+/package-lock.json
 /.phpunit.cache
 /bootstrap/ssr
 /node_modules

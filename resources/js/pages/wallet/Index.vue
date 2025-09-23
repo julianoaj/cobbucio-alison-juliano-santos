@@ -8,6 +8,7 @@ import BalanceCard from './BalanceCard.vue';
 import WalletActions from './WalletActions.vue';
 import { onMounted } from 'vue';
 import { useHomeStore } from '@/stores/home/useHomeStore';
+import axios from 'axios';
 
 interface Props {
     wallet: Wallet
@@ -26,6 +27,10 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 onMounted(() => {
     store.setWallet(props.wallet);
+
+    axios.get(route('api.transaction.index')).then((response) => {
+        console.log(response.data);
+    })
 })
 </script>
 

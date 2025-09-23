@@ -24,6 +24,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->configureRateLimiting();
+
         $this->routes(function () {
             Route::middleware('web')->group(base_path('routes/auth.php'));
 
@@ -34,6 +36,15 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')->group(base_path('routes/wallet/web.php'));
 
             Route::middleware('web')->group(base_path('routes/transaction/web.php'));
+
+            Route::middleware('api')->group(base_path('routes/transaction/api.php'));
+        });
+    }
+
+    protected function configureRateLimiting(): void
+    {
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
     }
 }
