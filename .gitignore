@@ -1,4 +1,5 @@
 /package-lock.json
+/composer.lock
 /.phpunit.cache
 /bootstrap/ssr
 /node_modules
