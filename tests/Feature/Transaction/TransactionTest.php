@@ -69,10 +69,9 @@ describe('error cases', function () {
 
         $response->assertStatus(500);
 
-        expect((string) $this->user->fresh()->wallet->balance)->toBe('0.00')
-            ->and((string) $recipient->fresh()->wallet->balance)->toBe('0.00');
-
-        expect(Transaction::query()->count())->toBe(0);
+        expect((string)$this->user->fresh()->wallet->balance)->toBe('0.00')
+            ->and((string)$recipient->fresh()->wallet->balance)->toBe('0.00')
+            ->and(Transaction::query()->count())->toBe(0);
     });
 });
 
@@ -136,3 +135,95 @@ it('stores a transfer and records the transaction', function () {
         ->and($transaction?->to_user_id)->toBe($freshRecipient->id);
 });
 
+describe('update transaction', function () {
+    it('validates status is required on update', function () {
+        $recipient = User::factory()->create();
+
+        $transaction = Transaction::create([
+            'user_id' => $this->user->id,
+            'type' => 'transfer',
+            'amount' => 10,
+            'to_user_id' => $recipient->id,
+            'currency' => 'BRL',
+            'status' => 'completed',
+        ]);
+
+        $response = $this->patch(route('transaction.update', $transaction), []);
+
+        $response->assertInvalid(['status']);
+    });
+
+    it('rejects invalid status value on update', function () {
+        $recipient = User::factory()->create();
+
+        $transaction = Transaction::create([
+            'user_id' => $this->user->id,
+            'type' => 'transfer',
+            'amount' => 10,
+            'to_user_id' => $recipient->id,
+            'currency' => 'BRL',
+            'status' => 'completed',
+        ]);
+
+        $response = $this->patch(route('transaction.update', $transaction), [
+            'status' => 'foo',
+        ]);
+
+        $response->assertInvalid(['status']);
+    });
+
+    it('requires authentication to update a transaction', function () {
+        $recipient = User::factory()->create();
+
+        $transaction = Transaction::create([
+            'user_id' => $this->user->id,
+            'type' => 'transfer',
+            'amount' => 10,
+            'to_user_id' => $recipient->id,
+            'currency' => 'BRL',
+            'status' => 'completed',
+        ]);
+
+        auth()->logout();
+
+        $response = $this->patch(route('transaction.update', $transaction), [
+            'status' => 'refund',
+        ]);
+
+        $response->assertRedirect();
+    });
+
+    it('refunds a completed transfer and reverses balances', function () {
+        expect((string) $this->user->wallet->balance)->toBe('0.00');
+
+        $this->post(route('transaction.store'), [
+            'type' => 'deposit',
+            'amount' => 200,
+        ])->assertSuccessful();
+
+        $recipient = User::factory()->create();
+
+        $this->post(route('transaction.store'), [
+            'type' => 'transfer',
+            'amount' => 75,
+            'email' => $recipient->email,
+        ])->assertSuccessful();
+
+        $transaction = Transaction::query()->latest('id')->first();
+        expect($transaction?->type)->toBe('transfer');
+
+        $response = $this->patch(route('transaction.update', $transaction), [
+            'status' => 'refund',
+        ]);
+
+        $response->assertSuccessful();
+
+        $freshSender = $this->user->fresh();
+        $freshRecipient = $recipient->fresh();
+        $freshTransaction = $transaction?->fresh();
+
+        expect((string)$freshSender->wallet->balance)->toBe('200.00')
+            ->and((string)$freshRecipient->wallet->balance)->toBe('0.00')
+            ->and($freshTransaction?->status)->toBe('refunded');
+    });
+});
