@@ -31,7 +31,7 @@ Funcionalidades principais
 - ✅ Realização de transações financeiras (entrada e saída).
 - ✅ Depósito em carteira.
 - ✅ Validação de saldo antes das operações.
-- ✅ Possibilidade de reversão de transações/depositos por inconsistência ou solicitação.
+- ✅ Possibilidade de reversão de transações por inconsistência ou solicitação.
 
 O projeto tambem atende os diferenciais:
 
@@ -68,9 +68,9 @@ As tecnologias utilizadas foram:
 >
 > - Gerenciador de banco de dados (PHPMyAdmin, Datagrip, DBeaver, MySQL Workbench, etc)
 
-# Inicialização do Projeto
+# Preparando o ambiente
 
-Siga os passos abaixo para configurar o ambiente:
+Siga os passos abaixo para configurar e rodar o projeto localmente.:
 
 *Obs: No projeto utilizo o laravel sail, se sinta livre para rodar os comandos docker diretamente caso prefira.*
 
