@@ -9,6 +9,7 @@ import * as z from 'zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Stepper, StepperDescription, StepperItem, StepperSeparator, StepperTitle, StepperTrigger } from '@/components/ui/stepper';
 import { toast } from 'vue-sonner';
+import axios from 'axios';
 
 interface Props {
     btnLabel: string;
@@ -77,16 +78,18 @@ const steps = [
     },
 ];
 
-function onSubmit(values: any) {
-    toast('Event has been created', {
-        description: 'Sunday, December 03, 2023 at 9:00 AM',
-        action: {
-            label: 'Undo',
-            onClick: () => console.log('Undo'),
-        },
-    });
-
-    console.log(values);
+const onSubmit = async (values: any) => {
+    await axios.post(route('transaction.store'), {
+        type: 'deposit',
+        amount: values.balance,
+    }).finally(() => {
+        toast('Valor depositado com sucesso!', {
+            description: '',
+            action: {
+                label: 'Okay',
+            },
+        });
+    })
 
     open.value = false;
 }

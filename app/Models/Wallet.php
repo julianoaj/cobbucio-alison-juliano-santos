@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Database\Factories\WalletFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Wallet extends Model
 {
-    /** @use HasFactory<\Database\Factories\WalletFactory> */
+    /** @use HasFactory<WalletFactory> */
     use HasFactory;
 
     protected $fillable = [
