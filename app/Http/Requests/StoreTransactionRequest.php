@@ -42,8 +42,6 @@ class StoreTransactionRequest extends FormRequest
             if ($user !== null) {
                 $this->merge(['to_user_id' => $user->id]);
             }
-            // If no user is found, we intentionally do not set to_user_id so that
-            // validation can fail with the appropriate error.
         }
     }
 

@@ -13,7 +13,6 @@
     <img src="https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white" alt="docker">
     <img src="https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white" alt="nginx">
     <img src="https://img.shields.io/badge/Redis-FF4438?style=for-the-badge&logo=redis&logoColor=white" alt="redis">
-    <img src="https://img.shields.io/badge/Meilisearch-FF5CAA?style=for-the-badge&logo=meilisearch&logoColor=white" alt="meilisearch">
     <img src="https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white" alt="mysql">
     <img src="https://img.shields.io/badge/TypeScript-2F74C0?style=for-the-badge&logo=typescript&logoColor=white" alt="ts">
     <img src="https://img.shields.io/badge/Javascript-EFD81D?style=for-the-badge&logo=javascript&logoColor=white" alt="js">
@@ -50,7 +49,7 @@ Contém também:
 
 As tecnologias utilizadas foram:
 
-- **Back-end:** PHP/Laravel, Docker, Nginx, MySQL, Redis, Meilisearch.
+- **Back-end:** PHP/Laravel, Docker, Nginx, MySQL, Redis.
 
 - **Front-end:** Vue.js, shadcn-vue (UI), TypeScript, JavaScript, Tailwind.
 

@@ -3,11 +3,14 @@
 namespace App\Models;
 
 use App\Models\Scopes\UserScope;
+use App\Observers\TransactionObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 #[ScopedBy([UserScope::class])]
+#[ObservedBy([TransactionObserver::class])]
 class Transaction extends Model
 {
     protected $fillable = [

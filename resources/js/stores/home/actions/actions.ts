@@ -33,6 +33,7 @@ export const requestCreateTransaction = async (form: ModelTransactionValues, typ
             });
         })
         .catch((error) => {
+            console.log(error);
             toast(error.response.data.message as string, {
                 style: { background: '#f87171'},
                 description: 'Verifique os dados e tente novamente.',
