@@ -10,3 +10,8 @@ export const wallet: Reactive<Wallet> = reactive({
 })
 
 export const transactions = ref<TransactionItem[]>([]);
+
+export const loadingRequests = reactive({
+    createTransaction: false,
+    updateTransaction: false,
+})

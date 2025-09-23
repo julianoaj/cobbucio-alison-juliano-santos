@@ -1,5 +1,3 @@
-<!-- language: vue -->
-<!-- file: resources/js/components/confirmation/AlertConfirm.vue -->
 <script setup lang="ts">
 import { computed } from 'vue';
 import {
@@ -12,12 +10,14 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Loader } from 'lucide-vue-next';
 
 interface Props {
     btnLabel?: string;
     dialogTitle?: string;
     dialogDescription?: string;
     open?: boolean;
+    loading?: boolean;
 }
 
 const props = defineProps<Props>();
@@ -49,8 +49,12 @@ const onConfirm = (): void => {
             </AlertDialogHeader>
             <AlertDialogFooter>
                 <AlertDialogCancel @click="modelOpen = false">Cancelar</AlertDialogCancel>
-                <AlertDialogAction @click="onConfirm">
+                <AlertDialogAction v-if="!loading" @click="onConfirm">
                     {{ props.btnLabel ?? 'Continuar' }}
+                </AlertDialogAction>
+                <AlertDialogAction v-else disabled>
+                    <Loader class="w-4 h-4 mr-2 animate-spin" />
+                    Processando...
                 </AlertDialogAction>
             </AlertDialogFooter>
         </AlertDialogContent>

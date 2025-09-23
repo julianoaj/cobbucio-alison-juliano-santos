@@ -26,7 +26,7 @@ defineProps<{
 
 const store = useHomeStore();
 
-const { transactions } = storeToRefs(store);
+const { transactions, loadingRequests } = storeToRefs(store);
 
 const {formatAmount, toNumber} = useWallet()
 
@@ -155,6 +155,7 @@ const isWithinMinutes = (value: string | number | Date | null | undefined, minut
         </Table>
 
         <AlertConfirm
+            :loading="loadingRequests.updateTransaction"
             :open="confirmOpen"
             @update:open="(val) => (confirmOpen = val)"
             dialogTitle="Confirmar reversão"

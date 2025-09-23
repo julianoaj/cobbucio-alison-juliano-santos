@@ -39,9 +39,7 @@ class StoreTransactionRequest extends FormRequest
         if ($this->type === 'transfer' && $this->email) {
             $user = User::where('email', $this->email)->first();
 
-            if ($user !== null) {
-                $this->merge(['to_user_id' => $user->id]);
-            }
+            $this->merge(['to_user_id' => $user?->id]);
         }
     }
 
@@ -51,6 +49,7 @@ class StoreTransactionRequest extends FormRequest
             'type.in' => 'O tipo de transação deve ser depósito, retirada ou transferência.',
             'amount.min' => 'Por favor insira um valor maior que 0.',
             'to_user_id.exists' => 'O usuário destinatário não existe.',
+            'to_user_id.required_if' => 'O usuário destinatário não existe.',
         ];
     }
 }

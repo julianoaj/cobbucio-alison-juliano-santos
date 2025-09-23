@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { type LucideIcon, Check, Circle, Dot } from 'lucide-vue-next';
+import { type LucideIcon, Check, Circle, Dot, Loader } from 'lucide-vue-next';
 import { ref, computed, watch } from 'vue';
 import { toTypedSchema } from '@vee-validate/zod';
 import * as z from 'zod';
@@ -10,6 +10,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Stepper, StepperDescription, StepperItem, StepperSeparator, StepperTitle, StepperTrigger } from '@/components/ui/stepper';
 import { useHomeStore } from '@/stores/home/useHomeStore';
 import { ModelTransactionValues } from '@/types/wallet';
+import { storeToRefs } from 'pinia';
+
 
 interface Props {
     btnLabel: string;
@@ -19,6 +21,8 @@ interface Props {
 defineProps<Props>();
 
 const store = useHomeStore();
+
+const { loadingRequests } = storeToRefs(store);
 
 const open = ref<boolean>(false);
 const stepIndex = ref(1);
@@ -221,7 +225,16 @@ const onSubmit = async (values: ModelTransactionValues) => {
                                 >
                                     Continuar
                                 </Button>
-                                <Button v-if="stepIndex === 3" size="sm" type="submit"> Transferir! </Button>
+                                <Button
+                                    :disabled="loadingRequests.createTransaction"
+                                    v-if="stepIndex === 3 && !loadingRequests.createTransaction"
+                                    size="sm" type="submit">
+                                    Transferir!
+                                </Button>
+                                <Button v-else-if="stepIndex === 3 && loadingRequests.createTransaction" size="sm">
+                                    <Loader class="w-4 h-4 mr-2 animate-spin" />
+                                    Processando...
+                                </Button>
                             </div>
                         </div>
                     </form>

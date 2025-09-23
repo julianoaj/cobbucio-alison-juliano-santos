@@ -46,6 +46,7 @@ Contém também:
   - Criar nova transação (`POST /transactions`)
   - Atualizar transação (`PUT/PATCH /transactions/{id}`)
 - ✅ Tabela UI com as transações de cada usuário.
+- ✅ Notificação via email de cada ação de transação.
 
 As tecnologias utilizadas foram:
 
@@ -67,6 +68,43 @@ As tecnologias utilizadas foram:
 
 Siga os passos abaixo para configurar o ambiente:
 
+*Obs: No projeto utilizo o laravel sail, se sinta livre para rodar os comandos docker diretamente caso prefira.*
+
 1. **Clone o Repositório**  
    Faça o clone do projeto para sua máquina local.
 
+2. **Navegue até o diretório**  
+   Use o comando `cd nome-do-projeto` para entrar na pasta do projeto.
+
+3. **Configure o arquivo .env**  
+   Copie o arquivo `.env.example` para o `.env` e ajuste as configurações conforme necessário (para desenvolvimento local basta criar um `.env` igual ao `.env.example`).
+
+4. **Suba os containers**
+```bash'
+    ./vendor/bin/sail build
+    ./vendor/bin/sail up -d
+```
+
+5. **Instale as dependências**  
+
+```bash
+    ./vendor/bin/sail composer install
+    ./vendor/bin/sail npm install
+```
+Caso tenha o npm e composer instalados localmente:
+```bash
+    composer install
+    npm install
+```
+
+6. **Monte o banco de dados**
+
+```bash
+    ./vendor/bin/sail php artisan migrate
+```
+
+7. **Inicialize a aplicação**
+
+```bash
+    npm run dev
+```

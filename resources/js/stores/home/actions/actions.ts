@@ -1,5 +1,5 @@
 import { ModelTransactionValues, TransactionItem, Wallet } from '@/types/wallet';
-import { transactions, wallet } from '@/stores/home/states';
+import { loadingRequests, transactions, wallet } from '@/stores/home/states';
 import axios from 'axios';
 import { toast } from 'vue-sonner';
 
@@ -10,6 +10,8 @@ export const setWallet = (newWallet: Wallet) => {
 }
 
 export const requestCreateTransaction = async (form: ModelTransactionValues, typeTransaction: string): Promise<void> => {
+    loadingRequests.createTransaction = true;
+
     await axios
         .post(route('transaction.store'), {
             type: typeTransaction,
@@ -33,7 +35,6 @@ export const requestCreateTransaction = async (form: ModelTransactionValues, typ
             });
         })
         .catch((error) => {
-            console.log(error);
             toast(error.response.data.message as string, {
                 style: { background: '#f87171'},
                 description: 'Verifique os dados e tente novamente.',
@@ -42,12 +43,16 @@ export const requestCreateTransaction = async (form: ModelTransactionValues, typ
                 },
             });
         })
+        .finally(() => loadingRequests.createTransaction = false);
 }
 
 export const requestUpdateTransaction = async (transactionId: number, typeTransaction: string): Promise<void> => {
+    loadingRequests.updateTransaction = true;
+
     await axios.patch(route('transaction.update', {transaction: transactionId}), {
         status: typeTransaction
-    }).then((response) => {
+    })
+    .then((response) => {
         const payload = response.data as TransactionItem;
 
         const indexTransaction = transactions.value.findIndex(item => item.id === transactionId);
@@ -64,7 +69,8 @@ export const requestUpdateTransaction = async (transactionId: number, typeTransa
                 },
             });
         }
-    }).catch((error) => {
+    })
+    .catch((error) => {
         toast(error.response.data.message as string, {
             style: { background: '#f87171'},
             description: 'Verifique os dados e tente novamente.',
@@ -73,5 +79,6 @@ export const requestUpdateTransaction = async (transactionId: number, typeTransa
             },
         });
     })
+    .finally(() => loadingRequests.updateTransaction = false);
 }
 
