@@ -7,8 +7,13 @@ import { createApp, h } from 'vue';
 import { initializeTheme } from './composables/useAppearance';
 import { ZiggyVue } from 'ziggy-js';
 import { createPinia } from 'pinia';
+import 'moment/locale/pt-br';
+import moment from 'moment';
+
+moment.locale('pt-br');
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),

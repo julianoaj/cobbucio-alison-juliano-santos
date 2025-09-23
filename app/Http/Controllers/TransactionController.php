@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Wallet\Deposit;
+use App\Actions\Wallet\Refaund;
 use App\Actions\Wallet\Transfer;
 use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
@@ -11,14 +12,6 @@ use Exception;
 
 class TransactionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      * @throws Exception
@@ -43,11 +36,28 @@ class TransactionController extends Controller
         return response($transaction,200);
     }
 
+
     /**
-     * Remove the specified resource from storage.
+     * Update the specified transaction in store.
      */
-    public function destroy(Transaction $tansactions)
+    public function update(Transaction $transaction)
     {
-        //
+        request()->validate([
+            'status' => 'required|in:refund'
+        ]);
+
+        if ($transaction->status === 'refund') {
+            return response(['message' => 'Transação já estornada'],400);
+        }
+
+        app(Refaund::class)->handle($transaction);
+
+        $transaction->update([
+            'status' => 'refunded'
+        ]);
+
+        $transaction->fresh();
+
+        return response($transaction,200);
     }
 }

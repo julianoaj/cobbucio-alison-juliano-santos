@@ -17,10 +17,12 @@ import { useHomeStore } from '@/stores/home/useHomeStore';
 import { storeToRefs } from 'pinia';
 import { TransactionItem } from '@/types/wallet';
 import { usePage } from '@inertiajs/vue3';
+import moment from 'moment';
 
 defineProps<{
     loading?: boolean;
 }>();
+
 
 const store = useHomeStore();
 
@@ -40,7 +42,7 @@ const openConfirmFor = (id: number): void => {
 
 const handleConfirm = (): void => {
     if (selectedId.value !== null) {
-        console.log(selectedId.value);
+        store.requestUpdateTransaction(selectedId.value, 'refund');
     }
 
     selectedId.value = null;
@@ -48,7 +50,9 @@ const handleConfirm = (): void => {
 };
 
 const transcriptType = (transaction: TransactionItem): string => {
-    console.log(transaction.to_user_id)
+    if (transaction.status === 'refunded') {
+        return 'Transferência (Reembolso)';
+    }
 
     if (transaction.to_user_id && usePage().props.auth.user.id === transaction.to_user_id) {
         return 'Recebido';
@@ -68,26 +72,25 @@ const transcriptType = (transaction: TransactionItem): string => {
     }
 };
 
-const brFormatter = new Intl.DateTimeFormat('pt-BR', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false,
-});
-
 const formatDate = (value: string | number | Date | null | undefined): string => {
     if (!value) {
         return '-';
     }
 
-    const d = new Date(value);
-    if (Number.isNaN(d.getTime())) {
+    const m = moment(value);
+    if (!m.isValid()) {
         return '-';
     }
 
-    return brFormatter.format(d);
+    return m.format('DD/MM/YYYY HH:mm');
+};
+
+const isWithinMinutes = (value: string | number | Date | null | undefined, minutes = 10): boolean => {
+    if (!value) return false;
+    const m = moment(value);
+    if (!m.isValid()) return false;
+    const diffMinutes = moment().diff(m, 'minutes');
+    return diffMinutes <= minutes;
 };
 </script>
 
@@ -119,11 +122,16 @@ const formatDate = (value: string | number | Date | null | undefined): string =>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent class="w-46" :side-offset="4" align="end">
                                 <DropdownMenuGroup>
-                                    <DropdownMenuItem @click="openConfirmFor(row.id)">
+                                    <DropdownMenuItem
+                                        v-if="row.type === 'transfer' && isWithinMinutes(row.created_at, 300) && row.status !== 'refunded'"
+                                        @click="openConfirmFor(row.id)">
                                         Reverter
                                         <DropdownMenuShortcut>
                                             <LucideUndo />
                                         </DropdownMenuShortcut>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem v-else>
+                                        Nenhuma ação
                                     </DropdownMenuItem>
                                 </DropdownMenuGroup>
                             </DropdownMenuContent>
@@ -148,5 +156,3 @@ const formatDate = (value: string | number | Date | null | undefined): string =>
         />
     </div>
 </template>
-
-<style scoped></style>

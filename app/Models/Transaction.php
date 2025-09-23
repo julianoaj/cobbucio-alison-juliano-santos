@@ -19,6 +19,11 @@ class Transaction extends Model
         'status'
     ];
 
+    public function user(): HasOne
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
     public function toUser(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'to_user_id');

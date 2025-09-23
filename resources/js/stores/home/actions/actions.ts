@@ -43,3 +43,26 @@ export const requestCreateTransaction = async (form: ModelTransactionValues, typ
         })
 }
 
+export const requestUpdateTransaction = async (transactionId: number, typeTransaction: string): Promise<void> => {
+    await axios.patch(route('transaction.update', {transaction: transactionId}), {
+        status: typeTransaction
+    }).then((response) => {
+        const payload = response.data as TransactionItem;
+
+        const indexTransaction = transactions.value.findIndex(item => item.id === transactionId);
+
+        if (indexTransaction !== -1) {
+            transactions.value[indexTransaction] = payload;
+
+            wallet.balance = (Number(wallet.balance) + Number(payload.amount)).toFixed(2) as unknown as number;
+
+            toast('Reembolso realizado com sucesso!', {
+                description: '',
+                action: {
+                    label: 'Ok',
+                },
+            });
+        }
+    })
+}
+

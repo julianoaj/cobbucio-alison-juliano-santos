@@ -12,6 +12,7 @@ export type TransactionItem = {
     amount: number | string
     to_user_id: number | null
     to_user?: User
+    status: string
     created_at: string
     updated_at: string
 }
