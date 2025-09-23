@@ -3,15 +3,9 @@ import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
-import { LayoutGrid, WalletIcon } from 'lucide-vue-next';
+import { WalletIcon } from 'lucide-vue-next';
 
 const mainNavItems: NavItem[] = [
-    {
-        name: 'dashboard',
-        title: 'Dashboard',
-        href: route('dashboard'),
-        icon: LayoutGrid
-    },
     {
         name: 'wallet',
         title: 'Carteira',
@@ -22,11 +16,6 @@ const mainNavItems: NavItem[] = [
                 name: 'wallet',
                 title: 'Inicio',
                 href: route('wallet.show'),
-            },
-            {
-                name: 'walletTransfer',
-                title: 'Transações',
-                href: '',
             },
         ],
     },

@@ -10,7 +10,7 @@ Route::get('/', function (AuthKitLoginRequest $request) {
 })->middleware(['guest'])->name('login');
 
 Route::get('authenticate', function (AuthKitAuthenticationRequest $request) {
-    return tap(to_route('dashboard'), fn () => $request->authenticate());
+    return tap(to_route('wallet.show'), fn () => $request->authenticate());
 })->middleware(['guest']);
 
 Route::post('logout', function (AuthKitLogoutRequest $request) {
