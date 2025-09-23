@@ -59,12 +59,12 @@ As tecnologias utilizadas foram:
 # Requisitos
 
 - [NodeJS/npm](https://nodejs.org/en/download)
+- [Composer](https://yarnpkg.com/getting-started/install)
 - [Docker/Docker Compose](https://www.docker.com/get-started)
 - [WorkOS Account](https://laravel.com/docs/12.x/starter-kits#workos)
   - Crie uma conta gratuita no [WorkOS](https://workos.com/) e obtenha as credenciais para o seu ambiente (WORKOS_CLIENT_ID e WORKOS_API_KEY). Elas são necessárias (e facilmente encontradas na dashboard inicial da WorkOS) para a autenticação de usuário no sistema.
 
-> **Recomendado:**
-> - [Composer](https://yarnpkg.com/getting-started/install)
+> **Recomendado:** 
 >
 > - Gerenciador de banco de dados (PHPMyAdmin, Datagrip, DBeaver, MySQL Workbench, etc)
 
@@ -86,23 +86,17 @@ Siga os passos abaixo para configurar e rodar o projeto localmente.:
 ```
 Edite o arquivo .env e adicione as credenciais do [WorkOS](https://workos.com/) (WORKOS_CLIENT_ID e WORKOS_API_KEY, obtidas no dashboard da [WorkOS](https://workos.com/)).
 
-3. **Suba os containers**
-```bash'
-    ./vendor/bin/sail build
-    ./vendor/bin/sail up -d
-```
+3. **Instale as dependências**
 
-4. **Instale as dependências**  
-
-Com sail:
-```bash
-    ./vendor/bin/sail composer install
-    ./vendor/bin/sail npm install
-```
-Ou localmente:
 ```bash
     composer install
     npm install
+```
+
+4. **Suba os containers**
+```bash'
+    ./vendor/bin/sail build
+    ./vendor/bin/sail up -d
 ```
 
 5. **Gere APP_KEY Laravel**
