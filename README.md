@@ -61,8 +61,9 @@ As tecnologias utilizadas foram:
 - [NodeJS/npm](https://nodejs.org/en/download)
 - [Composer](https://yarnpkg.com/getting-started/install)
 - [Docker/Docker Compose](https://www.docker.com/get-started)
-- [WorkOS Account](https://laravel.com/docs/12.x/starter-kits#workos)
-  - Crie uma conta gratuita no [WorkOS](https://workos.com/) e obtenha as credenciais para o seu ambiente (WORKOS_CLIENT_ID e WORKOS_API_KEY). Elas são necessárias (e facilmente encontradas na dashboard inicial da WorkOS) para a autenticação de usuário no sistema.
+- [WorkOS Setup](https://laravel.com/docs/12.x/starter-kits#workos)
+  - Crie uma conta gratuita no [WorkOS](https://workos.com/) e obtenha as credenciais para o seu ambiente (WORKOS_CLIENT_ID e WORKOS_API_KEY). Elas são necessárias (e facilmente encontradas na dashboard inicial da WorkOS) para a autenticação de usuários no sistema.
+  - Configure uma URI de redirecionamento no WorkOS. Acesse atraves do menu "Redirects". Em seguida selecione o botão "Add Redirect URI" e adicione a seguinte URL: `http://localhost:80/authenticate`
 
 > **Recomendado:** 
 >
@@ -84,7 +85,7 @@ Siga os passos abaixo para configurar e rodar o projeto localmente.:
 ```bash'
     cp .env.example .env
 ```
-Edite o arquivo .env e adicione as credenciais do [WorkOS](https://workos.com/) (WORKOS_CLIENT_ID e WORKOS_API_KEY, obtidas no dashboard da [WorkOS](https://workos.com/)).
+Edite o arquivo .env e adicione as credenciais do [WorkOS](https://workos.com/) (WORKOS_CLIENT_ID e WORKOS_API_KEY, obtidas no dashboard da [WorkOS](https://workos.com/)). Alem disso será necessário configurar uma URI de redirecionamento dentro do dashboard da WorkOS (siga os passos em [Requisitos](#requisitos)).
 
 3. **Instale as dependências**
 
