@@ -58,6 +58,28 @@ const transcriptType = (type: string): string => {
             return type;
     }
 };
+
+const brFormatter = new Intl.DateTimeFormat('pt-BR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+});
+
+const formatDate = (value: string | number | Date | null | undefined): string => {
+    if (!value) {
+        return '-';
+    }
+
+    const d = new Date(value);
+    if (Number.isNaN(d.getTime())) {
+        return '-';
+    }
+
+    return brFormatter.format(d);
+};
 </script>
 
 <template>
@@ -68,6 +90,7 @@ const transcriptType = (type: string): string => {
                     <TableHead>Tipo</TableHead>
                     <TableHead>Valor</TableHead>
                     <TableHead>Para</TableHead>
+                    <TableHead>Criado em</TableHead>
                     <TableHead class="w-[1%] text-right">Ações</TableHead>
                 </TableRow>
             </TableHeader>
@@ -77,6 +100,7 @@ const transcriptType = (type: string): string => {
                     <TableCell class="capitalize">{{ transcriptType(row.type) }}</TableCell>
                     <TableCell>{{ formatAmount(toNumber(row.amount)) }}</TableCell>
                     <TableCell>{{ row.to_user_id ?? '-' }}</TableCell>
+                    <TableCell>{{ formatDate(row.created_at) }}</TableCell>
                     <TableCell class="text-right">
                         <DropdownMenu>
                             <DropdownMenuTrigger as-child>
@@ -85,8 +109,6 @@ const transcriptType = (type: string): string => {
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent class="w-46" :side-offset="4" align="end">
-                                <DropdownMenuLabel>Ações</DropdownMenuLabel>
-                                <DropdownMenuSeparator />
                                 <DropdownMenuGroup>
                                     <DropdownMenuItem @click="openConfirmFor(row.id)">
                                         Reverter

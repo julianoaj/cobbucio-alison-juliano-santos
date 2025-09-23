@@ -35,8 +35,7 @@ onMounted(() => {
     axios
         .get(route('api.transaction.index'))
         .then((response) => {
-            const payload = response.data;
-            items.value = Array.isArray(payload?.data) ? (payload.data as TransactionItem[]) : (payload as TransactionItem[]);
+            items.value = response.data;
         })
         .finally(() => {
             loading.value = false;

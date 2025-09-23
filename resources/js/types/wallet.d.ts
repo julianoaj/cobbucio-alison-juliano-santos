@@ -9,4 +9,6 @@ export type TransactionItem = {
     type: string
     amount: number | string
     to_user_id: number | null
+    created_at: string
+    updated_at: string
 }
