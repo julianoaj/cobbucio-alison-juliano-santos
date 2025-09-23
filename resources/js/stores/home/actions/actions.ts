@@ -21,7 +21,11 @@ export const requestCreateTransaction = async (form: ModelTransactionValues, typ
         .then((response) => {
             transactions.value.unshift(response.data as TransactionItem);
 
-            wallet.balance = (Number(wallet.balance) - Number(form.balance)).toFixed(2) as unknown as number;
+            if (typeTransaction === 'deposit')
+                wallet.balance = (Number(wallet.balance) + Number(form.balance)).toFixed(2) as unknown as number;
+            else if (typeTransaction === 'transfer') {
+                wallet.balance = (Number(wallet.balance) - Number(form.balance)).toFixed(2) as unknown as number;
+            }
 
             const messageToast: string = typeTransaction === 'transfer'
                 ? 'Valor transferido com sucesso!'
