@@ -19,7 +19,7 @@ export const requestCreateTransaction = async (form: ModelTransactionValues, typ
         .then((response) => {
             transactions.value.unshift(response.data as TransactionItem);
 
-            wallet.balance = (Number(wallet.balance) + Number(form.balance)).toFixed(2) as unknown as number;
+            wallet.balance = (Number(wallet.balance) - Number(form.balance)).toFixed(2) as unknown as number;
 
             const messageToast: string = typeTransaction === 'transfer'
                 ? 'Valor transferido com sucesso!'
@@ -63,6 +63,14 @@ export const requestUpdateTransaction = async (transactionId: number, typeTransa
                 },
             });
         }
+    }).catch((error) => {
+        toast(error.response.data.message as string, {
+            style: { background: '#f87171'},
+            description: 'Verifique os dados e tente novamente.',
+            action: {
+                label: 'Ok',
+            },
+        });
     })
 }
 

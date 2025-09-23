@@ -54,7 +54,7 @@ const transcriptType = (transaction: TransactionItem): string => {
         return 'Transferência (Reembolso)';
     }
 
-    if (transaction.to_user_id && usePage().props.auth.user.id === transaction.to_user_id) {
+    if (transferReceived(transaction)) {
         return 'Recebido';
     }
 
@@ -70,6 +70,10 @@ const transcriptType = (transaction: TransactionItem): string => {
         default:
             return transaction.type;
     }
+};
+
+const transferReceived = (transaction: TransactionItem): boolean => {
+    return transaction.to_user_id !== null && usePage().props.auth.user.id === transaction.to_user_id;
 };
 
 const formatDate = (value: string | number | Date | null | undefined): string => {
@@ -123,8 +127,12 @@ const isWithinMinutes = (value: string | number | Date | null | undefined, minut
                             <DropdownMenuContent class="w-46" :side-offset="4" align="end">
                                 <DropdownMenuGroup>
                                     <DropdownMenuItem
-                                        v-if="row.type === 'transfer' && isWithinMinutes(row.created_at, 300) && row.status !== 'refunded'"
-                                        @click="openConfirmFor(row.id)">
+                                        v-if="row.type === 'transfer'
+                                        && isWithinMinutes(row.created_at, 300)
+                                        && row.status !== 'refunded'
+                                        && !transferReceived(row)"
+                                        @click="openConfirmFor(row.id)"
+                                    >
                                         Reverter
                                         <DropdownMenuShortcut>
                                             <LucideUndo />
