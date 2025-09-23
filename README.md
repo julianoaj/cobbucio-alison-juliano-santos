@@ -42,7 +42,10 @@ O projeto tambem atende os diferenciais:
 Contém também:
 
 - ✅ Gerenciador de estados do VUE.js (Pinia).
-- ✅ API para buscar dados de transação, atualizar e salvar.
+- ✅ API para:
+  - Buscar transações (`GET /transactions`)
+  - Criar nova transação (`POST /transactions`)
+  - Atualizar transação (`PUT/PATCH /transactions/{id}`)
 - ✅ Tabela UI com as transações de cada usuário.
 
 As tecnologias utilizadas foram:
