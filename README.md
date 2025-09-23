@@ -25,11 +25,13 @@
 
 Este projeto foi desenvolvido para um case de processo seletivo para a empresa Adriano Cobuccio. Ele consiste em construir uma carteira financeira e tem os seguintes objetivos:
 
-- ✅ Criar cadastro de usuários com autenticação.
-- ✅ Usuários podem fazer transações financeiras (entrada e saída).
-- ✅ Depositar dinheiro na carteira.
-- ✅ Validar saldo para operações de transação.
-- ✅ Operações de transação ou depósito devem ser passiveis de reversão em qualquer caso de inconsistência, ou por solicitação do usuário.
+Funcionalidades principais
+
+- ✅ Cadastro e autenticação de usuários.
+- ✅ Realização de transações financeiras (entrada e saída).
+- ✅ Depósito em carteira.
+- ✅ Validação de saldo antes das operações.
+- ✅ Possibilidade de reversão de transações/depositos por inconsistência ou solicitação.
 
 O projeto tambem atende os diferenciais:
 
@@ -46,7 +48,7 @@ Contém também:
   - Criar nova transação (`POST /transactions`)
   - Atualizar transação (`PUT/PATCH /transactions/{id}`)
 - ✅ Tabela UI com as transações de cada usuário.
-- ✅ Notificação via email de cada ação de transação.
+- ✅ Notificação via email para cada ação de transação.
 
 As tecnologias utilizadas foram:
 
@@ -73,40 +75,51 @@ Siga os passos abaixo para configurar o ambiente:
 *Obs: No projeto utilizo o laravel sail, se sinta livre para rodar os comandos docker diretamente caso prefira.*
 
 1. **Clone o Repositório**  
-   Faça o clone do projeto para sua máquina local.
+```bash'
+    git clone https://github.com/julianoaj/cobbucio-alison-juliano-santos
+    cd cobbucio-alison-juliano-santos
+```
 
-2. **Navegue até o diretório**  
-   Use o comando `cd nome-do-projeto` para entrar na pasta do projeto.
+2. **Configure o arquivo .env**  
+```bash'
+    cp .env.example .env
+```
+Edite o arquivo .env e adicione as credenciais do [WorkOS](https://workos.com/) (WORKOS_CLIENT_ID e WORKOS_API_KEY, obtidas no dashboard da [WorkOS](https://workos.com/)).
 
-3. **Configure o arquivo .env**  
-   Copie o arquivo `.env.example` para o `.env` e ajuste as configurações conforme necessário. Se atente para as variáveis de ambiente do WorkOS (WORKOS_CLIENT_ID e WORKOS_API_KEY, elas são obtidas no dashboard da [WorkOS](https://workos.com/)).:
-
-4. **Suba os containers**
+3. **Suba os containers**
 ```bash'
     ./vendor/bin/sail build
     ./vendor/bin/sail up -d
 ```
 
-5. **Instale as dependências**  
+4. **Instale as dependências**  
 
+Com sail:
 ```bash
     ./vendor/bin/sail composer install
     ./vendor/bin/sail npm install
 ```
-Caso tenha o npm e composer instalados localmente:
+Ou localmente:
 ```bash
     composer install
     npm install
 ```
 
-6. **Monte o banco de dados**
+5. **Rode as migrations**
 
 ```bash
     ./vendor/bin/sail php artisan migrate
 ```
 
-7. **Inicialize a aplicação**
+7. **Inicialize o front-end**
 
 ```bash
     npm run dev
+```
+
+## ✅ Testes
+Para rodar os testes, utilize o comando:
+
+```bash
+    ./vendor/bin/sail pest
 ```
