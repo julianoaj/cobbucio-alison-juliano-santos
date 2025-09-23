@@ -105,7 +105,13 @@ Ou localmente:
     npm install
 ```
 
-5. **Rode as migrations**
+5. **Gere APP_KEY Laravel**
+
+```bash
+    ./vendor/bin/sail php artisan key:generate
+```
+
+6. **Rode as migrations**
 
 ```bash
     ./vendor/bin/sail php artisan migrate
