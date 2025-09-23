@@ -6,26 +6,27 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
     DropdownMenuGroup,
     DropdownMenuShortcut,
 } from '@/components/ui/dropdown-menu';
-import { TransactionItem } from '@/types/wallet';
 import { Ellipsis, LucideUndo } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
 import AlertConfirm from '@/components/confirmation/AlertConfirm.vue';
 import { useWallet } from '@/composables/useWallet';
+import { useHomeStore } from '@/stores/home/useHomeStore';
+import { storeToRefs } from 'pinia';
 
-const props = defineProps<{
-    items: TransactionItem[];
+defineProps<{
     loading?: boolean;
 }>();
 
+const store = useHomeStore();
+
+const { transactions } = storeToRefs(store);
+
 const {formatAmount, toNumber} = useWallet()
 
-const hasItems = computed(() => props.items && props.items.length > 0);
-
+const hasItems = computed(() => transactions.value && transactions.value.length > 0);
 
 const confirmOpen = ref(false);
 const selectedId = ref<number | null>(null);
@@ -96,7 +97,7 @@ const formatDate = (value: string | number | Date | null | undefined): string =>
             </TableHeader>
 
             <TableBody v-if="hasItems">
-                <TableRow v-for="row in items" :key="row.id">
+                <TableRow v-for="row in transactions" :key="row.id">
                     <TableCell class="capitalize">{{ transcriptType(row.type) }}</TableCell>
                     <TableCell>{{ formatAmount(toNumber(row.amount)) }}</TableCell>
                     <TableCell>{{ row.to_user_id ?? '-' }}</TableCell>

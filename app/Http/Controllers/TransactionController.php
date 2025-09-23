@@ -29,7 +29,7 @@ class TransactionController extends Controller
             default => throw new Exception("Tipo de transação inválido"),
         };
 
-        Transaction::create([
+        $transaction = Transaction::create([
             'user_id' => auth()->id(),
             'type' => $request->type,
             'amount' => $request->amount,
@@ -38,7 +38,7 @@ class TransactionController extends Controller
             'status' => 'completed'
         ]);
 
-        return response('',200);
+        return response($transaction,200);
     }
 
     /**

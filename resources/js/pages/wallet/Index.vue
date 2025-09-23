@@ -2,13 +2,14 @@
 import { Head } from '@inertiajs/vue3';
 import type { BreadcrumbItem } from '@/types';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { TransactionItem, Wallet } from '@/types/wallet';
+import { Wallet } from '@/types/wallet';
 import BalanceCard from './BalanceCard.vue';
 import WalletActions from './WalletActions.vue';
 import { onMounted, ref } from 'vue';
 import { useHomeStore } from '@/stores/home/useHomeStore';
 import axios from 'axios';
 import TransactionTable from '@/components/wallet/TransactionTable.vue';
+import { storeToRefs } from 'pinia';
 
 interface Props {
     wallet: Wallet;
@@ -18,6 +19,8 @@ const store = useHomeStore();
 
 const props = defineProps<Props>();
 
+const { transactions } = storeToRefs(store);
+
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Carteira',
@@ -26,7 +29,6 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const loading = ref<boolean>(false);
-const items = ref<TransactionItem[]>([]);
 
 onMounted(() => {
     store.setWallet(props.wallet);
@@ -35,7 +37,7 @@ onMounted(() => {
     axios
         .get(route('api.transaction.index'))
         .then((response) => {
-            items.value = response.data;
+            transactions.value = response.data;
         })
         .finally(() => {
             loading.value = false;
@@ -57,7 +59,7 @@ onMounted(() => {
                 </div>
             </div>
             <div class="relative flex-1 rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                <TransactionTable :items="items" :loading="loading" />
+                <TransactionTable :loading="loading" />
             </div>
         </div>
     </AppLayout>

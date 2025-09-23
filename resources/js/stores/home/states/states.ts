@@ -1,5 +1,5 @@
 import { Reactive, reactive, ref } from 'vue';
-import { Wallet } from '@/types/wallet';
+import { TransactionItem, Wallet } from '@/types/wallet';
 
 export const page = ref('dashboard')
 
@@ -8,3 +8,5 @@ export const wallet: Reactive<Wallet> = reactive({
     currency: '',
     balance: 0,
 })
+
+export const transactions = ref<TransactionItem[]>([]);

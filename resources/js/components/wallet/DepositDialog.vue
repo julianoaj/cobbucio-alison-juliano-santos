@@ -12,6 +12,7 @@ import { toast } from 'vue-sonner';
 import axios from 'axios';
 import { useHomeStore } from '@/stores/home/useHomeStore';
 import { storeToRefs } from 'pinia';
+import { TransactionItem } from '@/types/wallet';
 
 interface Props {
     btnLabel: string;
@@ -22,7 +23,7 @@ defineProps<Props>();
 
 const store = useHomeStore();
 
-const { wallet } = storeToRefs(store)
+const { wallet, transactions } = storeToRefs(store)
 
 const open = ref<boolean>(false);
 const stepIndex = ref(1);
@@ -88,16 +89,20 @@ const onSubmit = async (values: any) => {
     await axios.post(route('transaction.store'), {
         type: 'deposit',
         amount: values.balance,
-    }).finally(() => {
-        wallet.value.balance = (Number(wallet.value.balance) + Number(values.balance)).toFixed(2) as unknown as number;
-
-        toast('Valor depositado com sucesso!', {
-            description: '',
-            action: {
-                label: 'Ok',
-            },
-        });
     })
+        .then((response) => {
+            transactions.value.unshift(response.data as TransactionItem);
+        })
+        .finally(() => {
+            wallet.value.balance = (Number(wallet.value.balance) + Number(values.balance)).toFixed(2) as unknown as number;
+
+            toast('Valor depositado com sucesso!', {
+                description: '',
+                action: {
+                    label: 'Ok',
+                },
+            });
+        })
 
     open.value = false;
 }
