@@ -26,17 +26,30 @@
 
 Este projeto foi desenvolvido para um case de processo seletivo para a empresa Adriano Cobuccio. Ele consiste em construir uma carteira financeira e tem os seguintes objetivos:
 
-- Criar cadastro de usuários com autenticação.
-- Usuários podem fazer transações financeiras (entrada e saída).
-- Depositar dinheiro na carteira.
-- Validar saldo para operações de transação.
-- Operações de transação ou depósito devem ser passiveis de reversão em qualquer caso de inconsistência, ou por solicitação do usuário.
+- ✅ Criar cadastro de usuários com autenticação.
+- ✅ Usuários podem fazer transações financeiras (entrada e saída).
+- ✅ Depositar dinheiro na carteira.
+- ✅ Validar saldo para operações de transação.
+- ✅ Operações de transação ou depósito devem ser passiveis de reversão em qualquer caso de inconsistência, ou por solicitação do usuário.
+
+O projeto tambem atende os diferenciais:
+
+- ✅ Uso de Docker.
+- ✅ Testes unitários
+- ✅ Testes de integração
+- ✅ Documentação (README)
+
+Contém também:
+
+- ✅ Gerenciador de estados do VUE.js (Pinia).
+- ✅ API para buscar dados de transação, atualizar e salvar.
+- ✅ Tabela UI com as transações de cada usuário.
 
 As tecnologias utilizadas foram:
 
 - **Back-end:** PHP/Laravel, Docker, Nginx, MySQL, Redis, Meilisearch.
 
-- **Front-end:** Vue.js, TypeScript, JavaScript, Tailwind.
+- **Front-end:** Vue.js, shadcn-vue (UI), TypeScript, JavaScript, Tailwind.
 
 # Requisitos
 
