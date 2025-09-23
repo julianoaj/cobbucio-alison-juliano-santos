@@ -1,5 +1,9 @@
+import { Wallet } from '@/types/wallet';
+import { wallet } from '@/stores/home/states';
 
-export const setPage = (pageName: string) => {
-    console.log(pageName)
+export const setWallet = (newWallet: Wallet) => {
+    wallet.id = newWallet.id;
+    wallet.currency = newWallet.currency;
+    wallet.balance = newWallet.balance;
 }
 

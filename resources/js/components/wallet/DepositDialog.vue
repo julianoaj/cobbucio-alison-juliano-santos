@@ -10,6 +10,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Stepper, StepperDescription, StepperItem, StepperSeparator, StepperTitle, StepperTrigger } from '@/components/ui/stepper';
 import { toast } from 'vue-sonner';
 import axios from 'axios';
+import { useHomeStore } from '@/stores/home/useHomeStore';
+import { storeToRefs } from 'pinia';
 
 interface Props {
     btnLabel: string;
@@ -17,6 +19,10 @@ interface Props {
 }
 
 defineProps<Props>();
+
+const store = useHomeStore();
+
+const { wallet } = storeToRefs(store)
 
 const open = ref<boolean>(false);
 const stepIndex = ref(1);
@@ -83,10 +89,12 @@ const onSubmit = async (values: any) => {
         type: 'deposit',
         amount: values.balance,
     }).finally(() => {
+        wallet.value.balance = (Number(wallet.value.balance) + Number(values.balance)).toFixed(2) as unknown as number;
+
         toast('Valor depositado com sucesso!', {
             description: '',
             action: {
-                label: 'Okay',
+                label: 'Ok',
             },
         });
     })
@@ -174,7 +182,7 @@ const onSubmit = async (values: any) => {
                                     <FormItem>
                                         <FormLabel>Valor</FormLabel>
                                         <FormControl>
-                                            <Input min="0.01" step="0.01" type="number" v-bind="componentField" />
+                                            <Input placeholder="R$ 0,00" min="0.01" step="0.01" type="number" v-bind="componentField" />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>

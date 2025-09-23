@@ -6,12 +6,16 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { Wallet } from '@/types/wallet';
 import BalanceCard from './BalanceCard.vue';
 import WalletActions from './WalletActions.vue';
+import { onMounted } from 'vue';
+import { useHomeStore } from '@/stores/home/useHomeStore';
 
 interface Props {
     wallet: Wallet
 }
 
-defineProps<Props>();
+const store = useHomeStore();
+
+const props = defineProps<Props>();
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -19,6 +23,10 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: route('dashboard'),
     },
 ];
+
+onMounted(() => {
+    store.setWallet(props.wallet);
+})
 </script>
 
 <template>
